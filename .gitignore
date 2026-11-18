@@ -1,0 +1,11 @@
+# Source used to publish the claude.ai version of the site (same media as the root, not versioned twice)
+jrny-site/
+
+# Local tooling and OS files
+.claude/
+.vscode/
+node_modules/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.part

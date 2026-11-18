@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>JRNY Exhibitions</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: same dark stage as the main page. A floor-plan grid hero, then each pavilion as a full-width feature, alternating sides. */
+:root{
+  /* JRNY brand guideline V3: Black, Onyx, White, Silver, Gray, Orange, Brown */
+  --stage:#000000;--stage-2:#111216;--line:#343640;--ink:#ffffff;--ink-dim:#cccccc;--ink-mute:#808186;--amber:#ff5b00;--amber-deep:#4c1405;
+  --display:"Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
+  --body:"Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
+  --gut:max(16px,env(safe-area-inset-left,0px));--gutr:max(16px,env(safe-area-inset-right,0px));
+  color-scheme:dark;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--stage);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--stage)}
+img{max-width:100%}
+[hidden]{display:none!important}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:var(--gut);padding-right:var(--gutr)}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.02}
+.eyebrow{font-family:var(--display);font-weight:500;font-size:.78rem;letter-spacing:.32em;text-transform:uppercase;color:var(--amber)}
+.hl{color:var(--amber)}
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.8rem;padding:12px 20px;border:1px solid var(--amber);color:var(--ink);background:transparent;text-decoration:none;cursor:pointer;transition:background .2s,color .2s}
+.btn:hover,.btn.solid{background:var(--amber);color:#000000}
+
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--stage) 82%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{display:flex;flex-direction:column;line-height:1;text-decoration:none}
+.logo b{font-family:var(--display);font-weight:900;font-size:1.45rem;letter-spacing:.02em}
+.logo span{font-family:var(--display);font-size:.5rem;letter-spacing:.62em;color:var(--amber);margin-top:3px}
+.back{font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-dim);text-decoration:none}
+.back:hover{color:var(--ink)}
+.navr{display:flex;align-items:center;gap:24px}
+@media (max-width:560px){.back{display:none}}
+
+/* hero: a booth floor plan */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:48px 48px;opacity:.55;mask-image:radial-gradient(ellipse 70% 80% at 75% 40%,#000 20%,transparent 75%)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(32px,5vw,72px);align-items:center}
+.hero-copy{min-width:0}
+.plan{margin:0;min-width:0;max-width:460px;justify-self:end;width:100%}
+.plan svg{display:block;width:100%;height:auto}
+.plan rect,.plan path,.plan circle{fill:none;stroke:var(--amber);stroke-width:1.2}
+.plan .wall{stroke-width:2}
+.plan .open{stroke:var(--amber);stroke-dasharray:6 5;opacity:.6}
+.plan .fill{fill:var(--amber);fill-opacity:.25}
+.plan .zone{stroke-dasharray:4 4;fill:var(--amber);fill-opacity:.06}
+.plan .arrow{stroke:var(--ink-dim)}
+.plan .dim{stroke:var(--ink-dim);stroke-width:.8;stroke-dasharray:3 4}
+.plan text{fill:var(--ink);font-family:var(--display);font-size:9px;letter-spacing:.14em;text-anchor:middle;dominant-baseline:middle}
+.plan .dimt{fill:var(--ink-dim)}
+.hero .wrap{position:relative;padding-block:clamp(72px,11vw,140px)}
+.hero h1{font-weight:900;font-size:clamp(3rem,9vw,7rem);text-transform:uppercase;letter-spacing:-.01em;margin-top:16px;max-width:9ch}
+.hero p{color:var(--ink-dim);max-width:48ch;margin:24px 0 28px;font-size:1.05rem}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr}.plan{justify-self:start;max-width:420px}}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}
+.stat{padding:26px 20px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat b{display:block;font-family:var(--display);font-weight:800;font-size:clamp(2rem,4vw,2.8rem);line-height:1;color:var(--amber);font-variant-numeric:tabular-nums}
+.stat span{font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-dim)}
+@media (max-width:700px){.stats{grid-template-columns:1fr 1fr}.stat:nth-child(2){border-right:0}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+
+section{padding-block:clamp(64px,9vw,112px)}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 64px;align-items:end;margin-bottom:clamp(36px,5vw,56px)}
+.sec-head h2{font-size:clamp(2rem,5vw,3.8rem);font-weight:800;text-transform:uppercase;margin-top:12px}
+.sec-head p{color:var(--ink-dim);margin:0;max-width:52ch}
+@media (max-width:820px){.sec-head{grid-template-columns:1fr}}
+
+.build{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
+.b{padding:26px 22px 30px 0;border-right:1px solid var(--line);min-width:0}
+.b+.b{padding-left:22px}
+.b:last-child{border-right:0}
+.b small{font-family:var(--display);font-size:.72rem;letter-spacing:.2em;color:var(--amber);text-transform:uppercase}
+.b h3{font-size:1.3rem;font-weight:700;margin-top:10px}
+.b p{color:var(--ink-dim);margin:8px 0 0;font-size:.95rem}
+@media (max-width:820px){.build{grid-template-columns:1fr 1fr}.b:nth-child(2){border-right:0}.b:nth-child(3){padding-left:0}.b:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+@media (max-width:460px){.build{grid-template-columns:1fr}.b,.b+.b{padding-left:0;border-right:0;border-bottom:1px solid var(--line)}}
+
+/* features */
+.list{display:flex;flex-direction:column;gap:clamp(56px,8vw,96px)}
+.feat{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center}
+.feat:nth-child(even){grid-template-columns:minmax(0,1fr) minmax(0,1.55fr)}
+.feat:nth-child(even) .shot{order:2}
+.shot{all:unset;cursor:zoom-in;display:block;position:relative;border:1px solid var(--line);background:#000;aspect-ratio:16/9;overflow:hidden;max-width:100%;transition:border-color .25s}
+.shot:hover{border-color:var(--amber)}
+.shot:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+.shot img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s}
+.shot:hover img{transform:scale(1.03)}
+.shot .tag.n{left:auto;right:0;background:rgba(7,6,10,.85);color:var(--ink)}
+.shot .tag{position:absolute;left:0;bottom:0;background:var(--amber);color:#000000;font-family:var(--display);font-weight:700;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;padding:6px 10px}
+.info{min-width:0}
+.info .client{font-family:var(--display);font-weight:600;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--amber)}
+.info h3{font-size:clamp(1.6rem,3vw,2.3rem);font-weight:800;margin-top:8px}
+.info p{color:var(--ink-dim);margin:14px 0 0;max-width:46ch}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:20px 0 0;padding-top:16px;border-top:1px solid var(--line);font-size:.9rem}
+.facts dt{color:var(--ink-dim);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;padding-top:3px}
+.facts dd{margin:0;font-variant-numeric:tabular-nums}
+@media (max-width:820px){.feat,.feat:nth-child(even){grid-template-columns:1fr}.feat:nth-child(even) .shot{order:0}}
+
+.contact{position:relative;overflow:hidden;border-top:1px solid var(--line);text-align:left}
+.contact::before{content:"";position:absolute;left:50%;bottom:-60vw;width:110vw;height:110vw;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle at 50% 30%,rgba(255,91,0,.32),rgba(255,91,0,0) 55%)}
+.contact .wrap{position:relative}
+.contact h2{font-size:clamp(2.2rem,7vw,5rem);font-weight:800;text-transform:uppercase}
+.contact p{color:var(--ink-dim);max-width:52ch}
+.mails{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.mail{display:flex;align-items:center;gap:14px;border:1px solid var(--line);background:var(--stage-2);padding:12px 12px 12px 18px;min-width:0}
+.mail code{font-family:var(--body);font-size:1rem;user-select:all;overflow-wrap:anywhere}
+.mail button{font-family:var(--display);font-weight:700;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;padding:8px 12px;border:1px solid var(--amber);background:transparent;color:var(--ink);cursor:pointer}
+.mail button:hover{background:var(--amber);color:#000000}
+footer{border-top:1px solid var(--line);color:var(--ink-dim);font-size:.82rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:24px}
+
+.lb{position:fixed;inset:0;z-index:100;background:rgba(5,4,6,.94);display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 16px) var(--gutr) calc(env(safe-area-inset-bottom,0px) + 16px) var(--gut)}
+.lb-top{display:flex;justify-content:space-between;align-items:center;gap:16px;max-width:1400px;width:100%;margin:0 auto 12px}
+.lb-top .t{min-width:0}
+.lb-top .t small{display:block;font-family:var(--display);letter-spacing:.18em;text-transform:uppercase;font-size:.72rem;color:var(--amber)}
+.lb-top .t b{font-family:var(--display);font-size:1.15rem}
+.lb-stage{flex:1;display:flex;align-items:center;justify-content:center;gap:12px;min-height:0;max-width:1400px;width:100%;margin:0 auto}
+.lb-stage img{max-width:100%;max-height:100%;object-fit:contain;min-width:0;flex:1 1 auto;border:1px solid var(--line)}
+.ibtn{flex:none;width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line);background:var(--stage-2);color:var(--ink);cursor:pointer;font-size:1.2rem}
+.ibtn:hover{border-color:var(--amber);color:var(--amber)}
+@media (max-width:600px){.lb-stage .ibtn{display:none}}
+.lb-count{text-align:center;color:var(--ink-dim);font-size:.82rem;margin-top:10px;font-variant-numeric:tabular-nums}
+
+
+/* ---- scroll-pinned stages ---- */
+:root{--navh:64px}
+.pstage{position:relative}
+.pstage.pinned>.pframe{position:sticky;top:var(--navh);height:calc(100svh - var(--navh));overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.pinned>.pframe>.hero{flex:1;display:flex;align-items:center;border-bottom:0}
+.pinned>.pframe>.hero .wrap{width:100%;padding-block:clamp(24px,5vh,64px)}
+.plan .z{transition:opacity .45s cubic-bezier(.2,.7,.2,1)}
+.pinned .plan .z{opacity:.2}
+.pinned .plan .z.on{opacity:1}
+.pinned .plan .z.cur rect,.pinned .plan .z.cur circle{stroke-width:2.2;fill:var(--amber);fill-opacity:.16}
+.zcap{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);min-height:3.4em}
+.zcap .zi{grid-row:1 / span 2;font-family:var(--display);font-weight:700;color:var(--amber);font-variant-numeric:tabular-nums;letter-spacing:.08em}
+.zcap b{font-family:var(--display);font-size:1.05rem;text-transform:uppercase;letter-spacing:.06em}
+.zcap span:last-child{color:var(--ink-dim);font-size:.9rem}
+.pstage:not(.pinned) .zcap{display:none}
+/* pavilions stack over each other as you scroll */
+@media (min-width:821px) and (min-height:640px){
+  .list .feat{position:sticky;top:calc(var(--navh) + 20px);background:var(--stage);border:1px solid var(--line);padding:clamp(18px,2.4vw,32px);box-shadow:0 -24px 48px -12px rgba(0,0,0,.65)}
+}
+
+/* ---- JRNY brand guideline V3: Helvetica Neue hierarchy and logo ---- */
+body{font-size:14px;line-height:24px;font-weight:400}
+h1,h2,h3{text-transform:none!important;letter-spacing:-.01em}
+.hero h1{font-weight:700;font-size:clamp(2.6rem,5.6vw,4.5rem);line-height:1.333;max-width:12ch}   /* Hero title 72 / 96 */
+.sec-head h2{font-weight:700;font-size:clamp(1.9rem,3.6vw,3rem);line-height:1.333}             /* Headline 48 / 64 */
+.contact h2{font-weight:700;font-size:clamp(2.2rem,5vw,4.5rem);line-height:1.333}
+.info h3{font-weight:500;font-size:clamp(1.4rem,2.2vw,2rem);line-height:1.5}                      /* Sub-headline 32 / 48 */
+.b h3{font-weight:500}
+.eyebrow,.info .client,.b small,.stat span,.facts dt,.lb-top .t small{font-weight:500;font-size:12px;letter-spacing:.3em;text-transform:uppercase}
+.btn,.back,.mail button,.shot .tag{text-transform:none;letter-spacing:.01em;font-weight:500}
+.btn{font-size:14px;padding:12px 22px}
+.zcap b{text-transform:none;letter-spacing:0;font-weight:700}
+.stat b{font-weight:700;letter-spacing:-.02em}
+footer{font-weight:300;font-size:12px}
+.logo{display:block;width:150px;flex:none;padding-block:4px;color:var(--ink)}
+.logo svg{display:block;width:100%;height:auto}
+.plan text{font-weight:500}
+.info .yt{color:var(--ink);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--amber) 70%,transparent);text-underline-offset:5px;text-decoration-thickness:1px;transition:color .2s}
+.info .yt:hover,.info .yt:focus-visible{color:var(--amber);text-decoration-color:var(--amber)}
+.info .yt-ic{display:inline-block;margin-left:8px;font-size:.7em;color:var(--amber)}
+.yt-btn{display:inline-block;margin-top:14px;color:var(--amber);font-weight:500;font-size:14px;text-decoration:none}
+.yt-btn:hover{text-decoration:underline}
+nav.top{transition:background .3s}
+nav.top.scrolled{background:color-mix(in srgb,#000 70%,transparent);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2)}
+.nav-progress{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--amber);transform-origin:0 50%;transform:scaleX(var(--sp,0));pointer-events:none}
+.nav-cta.btn.solid{color:#000}.nav-cta.btn.solid:hover{background:var(--ink);border-color:var(--ink);color:#000}
+.back{transition:color .2s}
+
+/* on-page aftermovie player (40-second highlights; full film on Drive) */
+.vp{position:fixed;inset:0;z-index:110;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top,0px) + 16px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 16px) max(16px,env(safe-area-inset-left,0px))}
+.vp-box{width:min(1100px,100%);display:flex;flex-direction:column;gap:12px}
+.vp-top{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.vp-top .t{min-width:0}
+.vp-top small{display:block;font:500 12px/1.4 var(--body);letter-spacing:.3em;text-transform:uppercase;color:var(--amber)}
+.vp-top b{font-family:var(--body);font-size:1.15rem;font-weight:700}
+.vp video{width:100%;max-height:calc(100svh - 170px);aspect-ratio:16/9;background:#000;border:1px solid var(--line)}
+.vp-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;font-size:14px;color:var(--ink-dim)}
+.vp-foot a{color:var(--amber);font-weight:500;text-decoration:none}
+.vp-foot a:hover{text-decoration:underline}
+.play-tag{position:absolute;left:10px;top:10px;z-index:2;display:inline-flex;align-items:center;gap:6px;background:var(--amber);color:#000;border:0;font:500 12px/1 var(--body);padding:7px 10px;cursor:pointer}
+.play-tag:hover{background:var(--ink)}
+.play-tag:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<nav class="top" aria-label="Main">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="JRNY Experiential home"><svg viewBox="838.1 537.5 815.8 240" role="img" aria-label="JRNY Experiential"><g class="lw" fill="currentColor"><path transform="matrix(1,0,0,-1,918.0719,724.5266)" d="M0 0H-79.62V41.679H-21.908C-14.252 41.679-7.706 44.393-2.27 49.829 3.16 55.261 5.878 61.895 5.878 69.734V187.027H55.574V55.841C55.574 40.344 50.138 27.16 39.276 16.298 28.409 5.432 15.317 0 0 0"/><path transform="matrix(1,0,0,-1,1142.769,616.0519)" d="M0 0C2.136 0 4.007 .757 5.61 2.272 7.214 3.783 8.015 5.699 8.015 8.016V28.856C8.015 30.994 7.214 32.863 5.61 34.467 4.007 36.07 2.136 36.872 0 36.872H-83.629V0ZM65.725-108.475H5.877L-57.712-41.947H-83.629V-108.475H-133.323V78.552H21.908C31.702 78.552 40.119 75.033 47.157 67.999 54.191 60.96 57.711 52.543 57.711 42.749V-5.877C57.711-15.855 54.191-24.359 47.157-31.393 40.119-38.432 31.702-41.947 21.908-41.947H1.869Z"/><path transform="matrix(1,0,0,-1,1435.331,724.5266)" d="M0 0H-49.696L-149.354 116.224V0H-199.049V187.027H-149.354L-49.696 70.803V187.027H0Z"/><path transform="matrix(1,0,0,-1,1579.0728,724.5266)" d="M0 0H-49.694V67.596L-124.239 187.027H-70.536L-24.847 113.819 21.108 187.027H74.812L0 67.596Z"/></g><g class="ld" fill="#ff5b00"><path transform="matrix(1,0,0,-1,844.7,743.1032)" d="M0 0H21.228V-5.848H1.081C.295-5.848-.344-6.486-.344-7.321V-14.251H18.28V-20.146H-.344V-27.076C-.344-27.911 .295-28.549 1.081-28.549H21.228V-34.397H0C-3.636-34.397-6.584-31.448-6.584-27.812V-6.584C-6.584-2.948-3.636 0 0 0"/><path transform="matrix(1,0,0,-1,929.5001,759.85879)" d="M0 0 14.202-17.641H6.683L-3.734-4.669-14.151-17.641H-21.67L-7.468 0-20.933 16.756H-13.414L-3.734 4.667 5.946 16.756H13.463Z"/><path transform="matrix(1,0,0,-1,1012.9711,750.4243)" d="M0 0C0 .835-.688 1.473-1.473 1.473H-19.753V-8.943H-1.473C-.688-8.943 0-8.305 0-7.519ZM6.191 .737V-8.207C6.191-11.892 3.243-14.84-.393-14.84H-19.753V-27.076H-25.994V7.321H-.393C3.243 7.321 6.191 4.373 6.191 .737"/><path transform="matrix(1,0,0,-1,1070.1538,743.1032)" d="M0 0H21.228V-5.848H1.08C.295-5.848-.344-6.486-.344-7.321V-14.251H18.28V-20.146H-.344V-27.076C-.344-27.911 .295-28.549 1.08-28.549H21.228V-34.397H0C-3.636-34.397-6.584-31.448-6.584-27.812V-6.584C-6.584-2.948-3.636 0 0 0"/><path transform="matrix(1,0,0,-1,1162.1768,759.3677)" d="M0 0C.787 0 1.475 .638 1.475 1.424V8.943C1.475 9.778 .787 10.417 0 10.417H-19.753V0ZM-1.13-5.897 9.14-18.132H1.819L-8.451-5.897H-19.753V-18.132H-25.994V16.264H1.082C4.718 16.264 7.666 13.316 7.666 9.68V.737C7.666-2.948 4.718-5.897 1.082-5.897Z"/><path transform="matrix(1,0,0,-1,0,1080)" d="M1215.723 336.897H1221.964V302.5H1215.723Z"/><path transform="matrix(1,0,0,-1,1274.4332,743.1032)" d="M0 0H21.228V-5.848H1.081C.295-5.848-.344-6.486-.344-7.321V-14.251H18.28V-20.146H-.344V-27.076C-.344-27.911 .295-28.549 1.081-28.549H21.228V-34.397H0C-3.636-34.397-6.584-31.448-6.584-27.812V-6.584C-6.584-2.948-3.636 0 0 0"/><path transform="matrix(1,0,0,-1,1367.9312,743.1032)" d="M0 0H6.192V-34.397H0L-21.228-9.484V-34.397H-27.469V0H-21.228L0-24.913Z"/><path transform="matrix(1,0,0,-1,1417.495,743.1032)" d="M0 0H30.761V-5.848H18.476V-34.397H12.236V-5.848H0Z"/><path transform="matrix(1,0,0,-1,0,1080)" d="M1491.584 336.897H1497.825V302.5H1491.584Z"/><path transform="matrix(1,0,0,-1,1566.4597,763.2492)" d="M0 0-6.437 14.397-12.874 0ZM-2.752 20.146 12.579-14.251H6.388L2.604-5.848H-15.479L-19.213-14.251H-25.453L-10.073 20.146Z"/><path transform="matrix(1,0,0,-1,1628.5077,771.65237)" d="M0 0H19.36V-5.848H-6.241V28.549H0Z"/></g></svg></a>
+    <div class="navr">
+      <a class="back" href="index.html">← All work</a>
+      <a class="btn solid nav-cta" href="#contact">Plan a stand</a>
+    </div>
+  </div>
+  <i class="nav-progress" aria-hidden="true"></i>
+</nav>
+
+<div class="pstage" id="pHero" data-len="320"><div class="pframe">
+<header class="hero">
+  <div class="wrap">
+  <div class="hero-grid">
+  <div class="hero-copy">
+    <div class="eyebrow">JRNY Experiential · Exhibition design</div>
+    <h1>Spaces that <span class="hl">speak</span></h1>
+    <p>Striking, functional pavilions and stands for trade shows in India and Europe. From fintech fests to textile expos to defence shows, each one is built to pull a visitor off the aisle and into the brand.</p>
+    <a class="btn solid" href="#pavilions">See the pavilions</a>
+  </div>
+  <figure class="plan" aria-label="Sample floor plan of a 12 by 8 metre stand">
+    <svg viewBox="0 0 360 290" role="img" aria-hidden="true">
+      <!-- stand outline: 12 m x 8 m at 25 px per metre, open to the aisle at the front -->
+      <path class="wall" d="M30 230V30h300v200"/>
+      <path class="open" d="M30 230h300"/>
+      <!-- back LED wall -->
+      <g class="z" data-n="LED wall" data-d="A backlit brand story you can read from across the hall." style="--o:3"><rect class="fill" x="115" y="30" width="130" height="12"/>
+      <text x="180" y="58">LED WALL</text></g>
+      <!-- demo pods -->
+      <g class="z" data-n="Demo" data-d="Hands-on product demos and walk-up tours." style="--o:2"><rect x="44" y="72" width="80" height="62"/>
+      <text x="84" y="107">DEMO</text></g>
+      <!-- lounge -->
+      <g class="z" data-n="Lounge" data-d="Seating for longer conversations." style="--o:4"><rect x="236" y="72" width="80" height="62"/>
+      <text x="276" y="107">LOUNGE</text></g>
+      <!-- experience zone -->
+      <g class="z" data-n="Experience zone" data-d="The centrepiece that pulls people in off the aisle." style="--o:1"><circle class="zone" cx="180" cy="128" r="38"/>
+      <text x="180" y="125">EXPERIENCE</text><text x="180" y="138">ZONE</text></g>
+      <!-- storage -->
+      <g class="z" data-n="Store" data-d="Back-of-house space for stock and kit." style="--o:6"><rect x="44" y="168" width="56" height="44"/>
+      <text x="72" y="194">STORE</text></g>
+      <!-- meeting -->
+      <g class="z" data-n="Meet" data-d="A quieter corner for partner meetings." style="--o:5"><rect x="260" y="168" width="56" height="44"/>
+      <text x="288" y="194">MEET</text></g>
+      <!-- reception at the open front -->
+      <g class="z" data-n="Reception" data-d="Visitors are greeted and registered at the open front." style="--o:0"><rect x="140" y="196" width="80" height="22"/>
+      <text x="180" y="211">RECEPTION</text></g>
+      <!-- entries from the aisle -->
+      <path class="arrow" d="M110 252v-14m-5 5 5-5 5 5M250 252v-14m-5 5 5-5 5 5"/>
+      <text class="dimt" x="180" y="250">AISLE</text>
+      <!-- dimensions -->
+      <path class="dim" d="M30 272h300M30 266v12M330 266v12"/>
+      <text class="dimt" x="180" y="286">12 M</text>
+      <path class="dim" d="M12 30v200M6 30h12M6 230h12"/>
+      <text class="dimt" x="12" y="134" transform="rotate(-90 12 130)">8 M</text>
+    </svg>
+    <figcaption class="zcap" aria-live="polite"><span class="zi" id="zi">01 / 07</span><b id="zn">Reception</b><span id="zd">Visitors are greeted and registered at the open front.</span></figcaption>
+  </figure>
+  </div>
+  </div>
+</header>
+</div></div>
+
+<div class="stats">
+  <div class="stat"><b id="nPav">9</b><span>Pavilions shown</span></div>
+  <div class="stat"><b>7</b><span>Trade shows</span></div>
+  <div class="stat"><b>5</b><span>Cities</span></div>
+  <div class="stat"><b>2</b><span>Countries</span></div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">What goes into a stand</div>
+        <h2>From floor plan to <span class="hl">footfall</span></h2>
+      </div>
+      <p>One team takes the stand from the first sketch to the last day of the show, so the design that gets signed off is the one visitors walk into.</p>
+    </div>
+    <div class="build">
+      <div class="b"><small>Plan</small><h3>Concept &amp; 3D design</h3><p>Layouts, renders and a story for the space, built around how visitors move through it.</p></div>
+      <div class="b"><small>Build</small><h3>Fabrication</h3><p>Custom structures, canopies, LED walls and branded finishes, made for the venue.</p></div>
+      <div class="b"><small>Engage</small><h3>Experience zones</h3><p>Product displays, demo pods and interactive installations that give people a reason to stay.</p></div>
+      <div class="b"><small>Run</small><h3>On-site delivery</h3><p>Install, show days and dismantle, handled on the ground in every city.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="pavilions" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Pavilions</div>
+        <h2>On the <span class="hl">show floor</span></h2>
+      </div>
+      <p>Open any image to see the full project board.</p>
+    </div>
+    <div class="list" id="list"></div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="eyebrow">Have a show coming up?</div>
+    <h2 style="margin-top:12px">Let's build your <span class="hl">stand</span></h2>
+    <p>Send us the show, the hall and the stand size, and we'll come back with a layout and a concept.</p>
+    <div class="mails">
+      <div class="mail"><code>info@jrnyexperiential.com</code><button type="button" data-copy="info@jrnyexperiential.com">Copy</button></div>
+      <div class="mail"><code>info@zerodesignstudios.com</code><button type="button" data-copy="info@zerodesignstudios.com">Copy</button></div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span>© JRNY Experiential</span><a href="index.html">Back to all work</a></div></footer>
+
+<div class="vp" id="vp" hidden role="dialog" aria-modal="true" aria-labelledby="vpTitle">
+  <div class="vp-box">
+    <div class="vp-top"><div class="t"><small id="vpClient"></small><b id="vpTitle"></b></div><button class="ibtn" id="vpClose" aria-label="Close video">✕</button></div>
+    <video id="vpVideo" controls playsinline preload="metadata"></video>
+    <div class="vp-foot"><span>40-second highlight</span><a id="vpFull" href="#" target="_blank" rel="noopener">Watch the full aftermovie ↗</a></div>
+  </div>
+</div>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+  <div class="lb-top">
+    <div class="t"><small id="lbClient"></small><b id="lbTitle"></b></div>
+    <button class="ibtn" id="lbClose" aria-label="Close">✕</button>
+  </div>
+  <div class="lb-stage">
+    <button class="ibtn" id="lbPrev" aria-label="Previous pavilion">←</button>
+    <img id="lbImg" alt="">
+    <button class="ibtn" id="lbNext" aria-label="Next pavilion">→</button>
+  </div>
+  <div class="lb-count" id="lbCount"></div>
+</div>
+
+<script>
+// ---- on-page aftermovie player ----
+const CLIP={"1BNzqbPAfubJTbTNcALowggJ7EfheIb5b":"sbi-25years","1peSrG4yuUqQA0337oxmEbXuzwgCWqGnk":"jswc-rajasthan","1Is2Ti9XylnbiX8raPha83QIXFB2FDS4a":"jswc-shikhar","1AGgUAMeWIhndZpsMnSRYTxdYoCNP1AgR":"hdfc-knowledge","1TqzTw2V_pke2yBXhQ8xwiD-hNXWVXZw-":"cvent-cw25","1Cx4mCtqfw60DWQSAhTGFKDXhEBoyDVDS":"cvent-acc24","1FGfbqtGOZzEfXyyKiM_bsN-_52E42IEK":"jswc-tycoons","1EMy364iU6LoxkaMvRU06PenOjec2Njh6":"jswc-wow","1kAG3cjF1qDaCTTCQV1hb3NQAK3GzcoA8":"jswc-guardians","17_P-AD80vhSutqOMHifgmwS1IhfxBmAR":"jswc-yashotsav","1200lB-pfO9sVct6raKwXZglkvKjqMlNU":"jswc-aakraman","1ihBZ6VN19_OzFHYjQefdoVSXmS3zrn7f":"jswc-cruise","1WrdtFhbPVOvSgwV-hRooK_Y7XfmBlfFW":"jswc-roar24","1dkD0CRXURSh28U8Ydv3VAeNYrgIdYP-N":"jswc-roar23","1b2u_lR0n6CC9RUEh5PVbL1CmqR4R98Uk":"jswp-leap24","1eBbzRuSbS_8gDDmg7LasywQtfNWUrQaF":"jswp-excelerate","1mcc0hHEUCyzwLPT52Rx6k-vS-qMRlmAu":"jswp-rangotsav","18skJPYfe9BAUT_bJ8ujL5-yi-k6kbjcL":"jsw-acetech24","1ECH7JLkDhrM3TvTfz3FWF_ncRCgOLgEP":"sbi-sangam24","1un0_WWLL-SQpJqLYpM6C7yvvLWehjZqT":"sbi-sangam23","1fi74QEwJpL5QCYnzLE0fgQRlfagRRSnP":"bluestar"};
+const clipOf=u=>{const m=(u||"").match(/\/d\/([^\/]+)/);return m?CLIP[m[1]]:null};
+const VP=(function(){const vp=document.getElementById("vp"),v=document.getElementById("vpVideo");let last=null;
+  function open(key,client,title,full){last=document.activeElement;document.getElementById("vpClient").textContent=client;document.getElementById("vpTitle").textContent=title;
+    document.getElementById("vpFull").href=full;v.poster="vid/"+key+".jpg";v.src="vid/"+key+".mp4";vp.hidden=false;document.body.style.overflow="hidden";
+    const p=v.play();if(p&&p.catch)p.catch(()=>{});document.getElementById("vpClose").focus()}
+  function close(){v.pause();v.removeAttribute("src");v.load();vp.hidden=true;document.body.style.overflow="";last&&last.focus()}
+  document.getElementById("vpClose").onclick=close;
+  vp.addEventListener("click",e=>{if(e.target===vp)close()});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!vp.hidden)close()});
+  return {open,close}})();
+
+// [client, title, show, venue, year, note, images]  first image is the large one (img/wide), all open full size
+const X=[
+[ "Polycab","Ignis: The Ultimate Guardian","Elecrama","Noida","2023","A red-framed stand built around a giant cutaway of the Ignis fire-safe cable, with themed rooms showing the cable at work.",["s56"]],
+[ "Cvent","IMEX Pavilion","IMEX Frankfurt","Frankfurt, Germany","2024","A large two-storey pavilion under a suspended Cvent canopy, with demo stations around the edge for walk-up product tours. Around 12,000 visitors over the show.",["z91","s29"]],
+[ "Cvent","IMEX Pavilion","IMEX Frankfurt","Frankfurt, Germany","2023","A modular white-and-blue pavilion with a café, separate demo pods and a large event-app display.",["z82","s30"]],
+[ "JSW","Acetech Pavilion","Acetech","Bengaluru, Mumbai & Delhi","2025","A white, arched multi-brand JSW pavilion carrying JSW One Homes, JSW Paints and Avante zones across three cities.",["z43"],"https://youtu.be/DlLbz2HDpbA"],
+[ "Cipla","CSI Pavilion","CSI","India","2025","A bright blue-and-white Cipla pavilion with separate brand bays and open meeting counters.",["z44"]],
+[ "JSW Defence","Defence Pavilion","Defence expo","Delhi","2025","A pavilion built around a full-size drone shown with Shield AI, set against a backlit JSW wall.",["s24"]],
+[ "JSW","Acetech Pavilion","Acetech","Bengaluru, Mumbai & Delhi","2024","One JSW pavilion carried across three cities, with a #BetterEveryday pipe installation, a JSW Paints zone and Modula kitchens.",["z56","z57","s23"],"https://drive.google.com/file/d/18skJPYfe9BAUT_bJ8ujL5-yi-k6kbjcL/view"],
+[ "Perfios","Global Fintech Fest Pavilion","Global Fintech Fest","Mumbai","2024","A two-level blue pavilion with a curved branded fascia and meeting space for fintech partners.",["s54"]],
+[ "NPCI","Tech Extravaganza at Global Fintech Fest","Global Fintech Fest","Jio Convention, Mumbai","2022","An NPCI pavilion with an \"Experience the Metaverse\" zone, a robot host, a 123PAY booth and hands-on demo stations.",["z94","s37"]],
+[ "Arvind","Bharat Tex Pavilion","Bharat Tex","Pragati Maidan, Delhi","2024","An open, retail-style pavilion in wood and white, with styled mannequins and garment rails under a curved canopy.",["s52"]],
+[ "Gokaldas Exports","Bharat Tex Pavilion","Bharat Tex","Pragati Maidan, Delhi","2024","A boutique-style stand with garment displays and a \"Many Threads\" brand story wall.",["s55"]]];
+
+
+const list=document.getElementById("list");
+document.getElementById("nPav").textContent=X.length;
+list.innerHTML=X.map((p,i)=>`<article class="feat">
+  <button class="shot" type="button" data-i="${i}" aria-label="Open ${p[0]} ${p[1]} boards"><img src="img/wide/${p[6][0]}.jpg" alt="${p[0]} ${p[1]}" loading="${i<2?"eager":"lazy"}" width="1400" height="720"><span class="tag">${p[2]}</span>${p[6].length>1?`<span class="tag n">${p[6].length} boards</span>`:""}</button>
+  <div class="info"><div class="client">${p[0]}</div><h3>${p[7]?`<a class="yt" href="${p[7]}" target="_blank" rel="noopener" title="Watch the ${p[0]} ${p[1]} ${/youtu/.test(p[7])?"showreel on YouTube":"aftermovie"}">${p[1]}<span class="yt-ic" aria-hidden="true">↗</span></a>`:p[1]}</h3>${p[7]?`<a class="yt-btn" href="${p[7]}" target="_blank" rel="noopener">▶ ${/youtu/.test(p[7])?"Watch the showreel":"Play the aftermovie"}</a>`:""}<p>${p[5]}</p>
+  <dl class="facts"><dt>Show</dt><dd>${p[2]}</dd><dt>Venue</dt><dd>${p[3]}</dd><dt>Year</dt><dd>${p[4]}</dd></dl></div></article>`).join("");
+
+const seq=X.flatMap((p,pi)=>p[6].map((id,ii)=>({p,pi,id,ii})));
+const lb=document.getElementById("lb"),img=document.getElementById("lbImg");let cur=0,lastFocus=null;
+function show(i){cur=(i+seq.length)%seq.length;const s=seq[cur],p=s.p;img.src=`img/full/${s.id}.jpg`;img.alt=`${p[0]} ${p[1]}, board ${s.ii+1}`;
+  document.getElementById("lbClient").textContent=p[0];document.getElementById("lbTitle").textContent=`${p[1]} · ${p[3]} ${p[4]}`;
+  document.getElementById("lbCount").textContent=(p[6].length>1?`Board ${s.ii+1} of ${p[6].length} · `:"")+`Pavilion ${s.pi+1} of ${X.length}`}
+function open(i){lastFocus=document.activeElement;show(seq.findIndex(s=>s.pi===i));lb.hidden=false;document.body.style.overflow="hidden";document.getElementById("lbClose").focus()}
+function close(){lb.hidden=true;document.body.style.overflow="";lastFocus&&lastFocus.focus()}
+list.addEventListener("click",e=>{const a=e.target.closest("a.yt,a.yt-btn");if(a&&clipOf(a.href)){e.preventDefault();const p=X[+a.closest(".feat").querySelector(".shot").dataset.i];VP.open(clipOf(a.href),p[0],p[1]+" · "+p[3]+" "+p[4],a.href);return}const s=e.target.closest(".shot");if(s)open(+s.dataset.i)});
+document.getElementById("lbClose").onclick=close;
+document.getElementById("lbPrev").onclick=()=>show(cur-1);
+document.getElementById("lbNext").onclick=()=>show(cur+1);
+lb.addEventListener("click",e=>{if(e.target===lb||e.target.classList.contains("lb-stage"))close()});
+document.addEventListener("keydown",e=>{if(lb.hidden)return;if(e.key==="Escape")close();if(e.key==="ArrowLeft")show(cur-1);if(e.key==="ArrowRight")show(cur+1)});
+let tx=null;lb.addEventListener("touchstart",e=>{tx=e.touches[0].clientX},{passive:true});
+lb.addEventListener("touchend",e=>{if(tx===null)return;const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)show(cur+(d<0?1:-1));tx=null});
+document.querySelectorAll("[data-copy]").forEach(b=>b.addEventListener("click",()=>{
+  const t=b.dataset.copy;const done=()=>{b.textContent="Copied";setTimeout(()=>b.textContent="Copy",1600)};
+  const sel=()=>{const r=document.createRange();r.selectNodeContents(b.previousElementSibling);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Selected"};
+  try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+}));
+
+// ---- scroll-pinned hero: floor-plan zones light up in walking order ----
+(function(){
+  const nav=document.querySelector("nav.top"),s=document.getElementById("pHero"),f=s.querySelector(".pframe"),zones=[...s.querySelectorAll(".z")].sort((a,b)=>+a.style.getPropertyValue("--o")-+b.style.getPropertyValue("--o"));
+  const zi=document.getElementById("zi"),zn=document.getElementById("zn"),zd=document.getElementById("zd");
+  function layout(){document.documentElement.style.setProperty("--navh",nav.offsetHeight+"px");
+    s.classList.add("pinned");s.style.height="";
+    const fits=f.scrollHeight<=f.clientHeight+2&&innerWidth>900;
+    if(fits)s.style.height=s.dataset.len+"svh";else s.classList.remove("pinned");update()}
+  let ticking=false,last=-1;
+  function update(){ticking=false;if(!s.classList.contains("pinned"))return;
+    const r=s.getBoundingClientRect();const p=Math.min(1,Math.max(0,-(r.top-nav.offsetHeight)/Math.max(1,r.height-f.clientHeight)));
+    const k=Math.floor(Math.min(.999,p*1.15)*zones.length);
+    zones.forEach((z,i)=>{z.classList.toggle("on",i<=k);z.classList.toggle("cur",i===k)});
+    if(k!==last){last=k;const z=zones[k];zi.textContent=String(k+1).padStart(2,"0")+" / "+String(zones.length).padStart(2,"0");zn.textContent=z.dataset.n;zd.textContent=z.dataset.d}}
+  addEventListener("scroll",()=>{if(!ticking){ticking=true;requestAnimationFrame(update)}},{passive:true});
+  addEventListener("resize",layout);layout();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
+})();
+(function(){const nav=document.querySelector("nav.top");let t=false;
+  function u(){t=false;const m=document.documentElement.scrollHeight-innerHeight;nav.style.setProperty("--sp",m>0?Math.min(1,scrollY/m).toFixed(4):0);nav.classList.toggle("scrolled",scrollY>8)}
+  addEventListener("scroll",()=>{if(!t){t=true;requestAnimationFrame(u)}},{passive:true});u()})();
+
+// open at the top: the claude.ai viewer can carry the previous page's scroll position across pages
+(function(){if("scrollRestoration" in history)history.scrollRestoration="manual";
+  let touched=false;["wheel","touchstart","keydown","mousedown"].forEach(ev=>addEventListener(ev,()=>{touched=true},{passive:true,once:true}));
+  function top(){if(!location.hash&&!touched)window.scrollTo({top:0,left:0,behavior:"instant"})}
+  top();addEventListener("load",()=>{top();setTimeout(top,60);setTimeout(top,300);setTimeout(top,800)});
+  addEventListener("pageshow",e=>{if(e.persisted)top()});})();
+</script>
+</body>
+</html>
